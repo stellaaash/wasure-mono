@@ -21,20 +21,20 @@ const Canvas = struct {
     }
 
     pub fn get(self: *const Canvas, x: u32, y: u32) u8 {
-        return self.data[y * self.height + x];
+        return self.data[y * self.width + x];
     }
 
-    pub fn set(self: *const Canvas, x: u32, y: u32, color: u8) void {
-        self.data[y * self.height + x] = color;
+    pub fn set(self: *Canvas, x: u32, y: u32, color: u8) void {
+        self.data[y * self.width + x] = color;
     }
 };
 
-pub fn main() void {
+pub fn main() !void {
     var alloc: std.heap.GeneralPurposeAllocator(.{}) = .init;
     const gpa = alloc.allocator();
 
-    const canvas = Canvas.init(gpa, 25, 25);
+    var canvas = try Canvas.init(gpa, 25, 25);
     defer canvas.deinit();
 
-    std.debug.print("Canvas: {} {}", .{ canvas.width, canvas.height });
+    std.debug.print("Canvas: {} {}\n", .{ canvas.width, canvas.height });
 }
