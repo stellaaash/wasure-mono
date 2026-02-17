@@ -1,5 +1,8 @@
 const std = @import("std");
 
+const Point3 = struct { x: f32, y: f32, z: f32 };
+const Vec3 = struct { x: f32, y: f32, z: f32 };
+
 pub const Canvas = struct {
     width: u32,
     height: u32,
@@ -27,6 +30,12 @@ pub const Canvas = struct {
     // Set a pixel's color, with the origin to the top left of the canvas
     fn set(self: *Canvas, x: u32, y: u32, color: u24) void {
         self.data[y * self.width + x] = color;
+    }
+
+    pub fn to_viewport(x: u32, y: u32) Vec3 {
+        // TODO: Viewport size shouldn't be canvas size
+        // 1 should be the viewport's width, height and its distance from the origin
+        return Vec3{ .x = x * 1, .y = y * 1, .z = 1 };
     }
 
     // Put a pixel on the canvas, using a coordinate system with the origin
