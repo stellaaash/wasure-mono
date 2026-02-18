@@ -1,7 +1,7 @@
 const std = @import("std");
+const Vec3 = @import("Vec3.zig").Vec3;
 
 const Point3 = struct { x: f32, y: f32, z: f32 };
-const Vec3 = struct { x: f32, y: f32, z: f32 };
 
 pub const Canvas = struct {
     width: u32,
