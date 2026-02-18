@@ -54,4 +54,23 @@ pub const Canvas = struct {
 
         self.set(converted_x, converted_y, color);
     }
+
+    pub fn write_to_file(self: *Canvas, path: []const u8) !void {
+        const file = try std.fs.cwd().createFile(path, .{});
+        defer file.close();
+
+        // var buffer: [2048]u8 = undefined;
+
+        // Create a writer that will borrow the buffer
+        // var file_writer = file.writer(&buffer);
+        // const writer_interface: *std.Io.Writer = &file_writer.interface;
+
+        var y: u32 = 0;
+        while (y < self.height) : (y += 1) {
+            var x: u32 = 0;
+            while (x < self.width) : (x += 1) {
+                std.debug.print("[!] - Printing pixel at x {} and y {}...\n", .{ x, y });
+            }
+        }
+    }
 };
