@@ -40,11 +40,14 @@ pub const Canvas = struct {
 
     // Put a pixel on the canvas, using a coordinate system with the origin
     // at the center of the canvas
-    pub fn put_pixel(self: *Canvas, x: usize, y: usize, color: u24) void {
+    pub fn put_pixel(self: *Canvas, x: i32, y: i32, color: u24) void {
         std.debug.assert(x < self.width);
         std.debug.assert(y < self.height);
-        const converted_x = x + self.width / 2;
-        const converted_y = y - self.height / 2;
+
+        const half_width: i32 = @intCast(self.width / 2);
+        const half_height: i32 = @intCast(self.width / 2);
+        const converted_x: usize = @intCast(x + half_width);
+        const converted_y: usize = @intCast(half_height - y);
 
         self.set(converted_x, converted_y, color);
     }
