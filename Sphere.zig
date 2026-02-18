@@ -1,11 +1,11 @@
 const std = @import("std");
-const Point3 = @import("root").Point3;
-const Vec3 = @import("root").Vec3;
+const Vec3 = @import("Vec3.zig").Vec3;
+const Point3 = @import("Point3.zig").Point3;
 
-const Sphere = struct {
+pub const Sphere = struct {
     position: Point3,
     radius: f64,
-    color: u8,
+    color: u24,
 
     /// Computes intersection points between a ray and a sphere
     pub fn intersect_ray(self: Sphere, origin: Point3, direction: Vec3) [2]f64 {
