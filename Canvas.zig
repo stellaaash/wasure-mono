@@ -56,6 +56,7 @@ pub const Canvas = struct {
     }
 
     pub fn write_to_file(self: *Canvas, path: []const u8) !void {
+        try std.fs.cwd().deleteFile(path);
         const file = try std.fs.cwd().createFile(path, .{});
         defer file.close();
 
