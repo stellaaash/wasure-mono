@@ -8,3 +8,10 @@ using the [Computer Graphics from Scratch]() book by Gabriel Gambetta.
 
 <img width="1105" height="1149" alt="image" src="https://github.com/user-attachments/assets/bd788a56-53ae-4439-877e-6ba7e0f6f226" />
 
+## Usage
+```bash
+zig run main.zig
+```
+
+Then open the newly created `out.ppt` file.
+Everything is hard-coded for now, eventually I plan to make it possible to change the scene easily through a dedicated scene file.
