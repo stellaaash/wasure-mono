@@ -1,5 +1,6 @@
 const std = @import("std");
 const Vec3 = @import("Vec3.zig").Vec3;
+const scene = @import("root").scene;
 
 const Point3 = struct { x: f32, y: f32, z: f32 };
 
@@ -35,7 +36,7 @@ pub const Canvas = struct {
     pub fn to_viewport(x: i32, y: i32) Vec3 {
         // TODO: Viewport size shouldn't be canvas size
         // 1 should be the viewport's width, height and its distance from the origin
-        return Vec3{ .x = @floatFromInt(x * 1), .y = @floatFromInt(y * 1), .z = @floatFromInt(1) };
+        return Vec3{ .x = @floatFromInt(x * 1), .y = @floatFromInt(y * 1), .z = scene.projection_plane_d };
     }
 
     // Put a pixel on the canvas, using a coordinate system with the origin

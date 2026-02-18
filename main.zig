@@ -9,21 +9,27 @@ const canvas_height = 1080;
 
 const Scene = struct {
     spheres: [3]Sphere, // TODO: Dynamic size of spheres array
+    projection_plane_d: f64,
+    viewport_aspect_ratio: f64,
 };
 
-const scene = Scene{ .spheres = [_]Sphere{ Sphere{
-    .position = Point3{ .x = 0, .y = 0, .z = 3 },
-    .color = 0xFF0000,
-    .radius = 1,
-}, Sphere{
-    .position = Point3{ .x = -1, .y = 1, .z = 4 },
-    .color = 0x00FF00,
-    .radius = 1,
-}, Sphere{
-    .position = Point3{ .x = 1, .y = -1, .z = 2 },
-    .color = 0x0000FF,
-    .radius = 1,
-} } };
+pub const scene = Scene{
+    .spheres = [_]Sphere{ Sphere{
+        .position = Point3{ .x = 0, .y = 0, .z = 3 },
+        .color = 0xFF0000,
+        .radius = 1,
+    }, Sphere{
+        .position = Point3{ .x = -1, .y = 1, .z = 4 },
+        .color = 0x00FF00,
+        .radius = 1,
+    }, Sphere{
+        .position = Point3{ .x = 1, .y = -1, .z = 2 },
+        .color = 0x0000FF,
+        .radius = 1,
+    } },
+    .projection_plane_d = 1,
+    .viewport_aspect_ratio = 1,
+};
 
 /// Trace a ray through 3D space to determine a pixel's color.
 fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) u24 {
