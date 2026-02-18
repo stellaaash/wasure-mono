@@ -56,22 +56,36 @@ pub const Canvas = struct {
     }
 
     pub fn write_to_file(self: *Canvas, path: []const u8) !void {
-        try std.fs.cwd().deleteFile(path);
+        std.fs.cwd().deleteFile(path) catch {};
         const file = try std.fs.cwd().createFile(path, .{});
         defer file.close();
 
-        // var buffer: [2048]u8 = undefined;
+        var buffer: [2048]u8 = undefined;
 
         // Create a writer that will borrow the buffer
-        // var file_writer = file.writer(&buffer);
-        // const writer_interface: *std.Io.Writer = &file_writer.interface;
+        var file_writer = file.writer(&buffer);
+        const writer_interface: *std.Io.Writer = &file_writer.interface;
+
+        try writer_interface.print("P3\n", .{});
+        try writer_interface.print("{} {}\n", .{ self.width, self.height });
 
         var y: u32 = 0;
         while (y < self.height) : (y += 1) {
             var x: u32 = 0;
             while (x < self.width) : (x += 1) {
                 std.debug.print("[!] - Printing pixel at x {} and y {}...\n", .{ x, y });
+
+                const color = self.get(x, y);
+                const r = color >> 16 & 0xFF;
+                const g = color >> 8 & 0xFF;
+                const b = color >> 0 & 0xFF;
+
+                try writer_interface.print("{} {} {}", .{ r, g, b });
+                if (x < self.width - 1) {
+                    try writer_interface.print("\t", .{});
+                }
             }
+            try writer_interface.print("\n", .{});
         }
     }
 };
