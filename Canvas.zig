@@ -73,6 +73,7 @@ pub const Canvas = struct {
 
         try writer_interface.print("P3\n", .{});
         try writer_interface.print("{} {}\n", .{ self.width, self.height });
+        try writer_interface.print("255\n", .{});
 
         var y: u32 = 0;
         while (y < self.height) : (y += 1) {
@@ -90,5 +91,6 @@ pub const Canvas = struct {
             }
             try writer_interface.print("\n", .{});
         }
+        try writer_interface.flush();
     }
 };
