@@ -62,14 +62,16 @@ pub fn main() !void {
 
     // Main loop
     const origin = Point3{ .x = 0, .y = 0, .z = 0 };
-    var x: i32 = -canvas_width / 2;
-    while (x < canvas_width / 2) : (x += 1) {
-        var y: i32 = -canvas_height / 2;
-        while (y < canvas_height / 2) : (y += 1) {
+    var y: i32 = -canvas_height / 2;
+    while (y < canvas_height / 2) : (y += 1) {
+        var x: i32 = -canvas_width / 2;
+        while (x < canvas_width / 2) : (x += 1) {
             std.debug.print("x = {}, y = {}\n", .{ x, y });
             const direction = Canvas.to_viewport(x, y);
             const color = trace_ray(origin, direction, 1, std.math.inf(f32));
             canvas.put_pixel(x, y, color);
         }
     }
+
+    try canvas.write_to_file("out.ppm");
 }
