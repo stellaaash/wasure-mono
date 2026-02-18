@@ -40,12 +40,10 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) u24 {
     for (scene.spheres) |sphere| {
         const t = sphere.intersect_ray(origin, direction);
         if (t[0] >= start and t[0] <= finish and t[0] < closest_t) {
-            std.debug.print("[!] - Hit a sphere!\n", .{});
             closest_t = t[0];
             closest_color = sphere.color;
         }
         if (t[1] >= start and t[1] <= finish and t[1] < closest_t) {
-            std.debug.print("[!] - Hit a sphere!\n", .{});
             closest_t = t[1];
             closest_color = sphere.color;
         }
@@ -66,8 +64,7 @@ pub fn main() !void {
     while (y < canvas_height / 2) : (y += 1) {
         var x: i32 = -canvas_width / 2;
         while (x < canvas_width / 2) : (x += 1) {
-            std.debug.print("x = {}, y = {}\n", .{ x, y });
-            const direction = Canvas.to_viewport(x, y);
+            const direction = canvas.to_viewport(x, y);
             const color = trace_ray(origin, direction, 1, std.math.inf(f32));
             canvas.put_pixel(x, y, color);
         }

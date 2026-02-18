@@ -28,19 +28,26 @@ pub const Canvas = struct {
         return self.data[y * self.width + x];
     }
 
-    // Set a pixel's color, with the origin to the top left of the canvas
+    /// Set a pixel's color, with the origin to the top left of the canvas
     fn set(self: *Canvas, x: usize, y: usize, color: u24) void {
         self.data[y * self.width + x] = color;
     }
 
-    pub fn to_viewport(x: i32, y: i32) Vec3 {
-        // TODO: Viewport size shouldn't be canvas size
-        // 1 should be the viewport's width, height and its distance from the origin
-        return Vec3{ .x = @floatFromInt(x * 1), .y = @floatFromInt(y * 1), .z = scene.projection_plane_d };
+    /// Convert a pixel on the canvas to a Vector pointing to the point on the 3D viewport
+    pub fn to_viewport(self: *const Canvas, x: i32, y: i32) Vec3 {
+        const fx: f64 = @floatFromInt(x);
+        const fy: f64 = @floatFromInt(y);
+        const fw: f64 = @floatFromInt(self.width);
+        const fh: f64 = @floatFromInt(self.height);
+        return Vec3{
+            .x = fx * scene.viewport_aspect_ratio / fw,
+            .y = fy * scene.viewport_aspect_ratio / fh,
+            .z = scene.projection_plane_d,
+        };
     }
 
-    // Put a pixel on the canvas, using a coordinate system with the origin
-    // at the center of the canvas
+    /// Put a pixel on the canvas, using a coordinate system with the origin
+    /// at the center of the canvas
     pub fn put_pixel(self: *Canvas, x: i32, y: i32, color: u24) void {
         std.debug.assert(x < self.width);
         std.debug.assert(y < self.height);
@@ -49,8 +56,6 @@ pub const Canvas = struct {
         const half_height: i32 = @intCast(self.width / 2);
         const converted_x: usize = @intCast(x + half_width);
         const converted_y: usize = @intCast(y + half_height);
-
-        std.debug.print("converted_x = {}, converted_y = {}\n", .{ converted_x, converted_y });
 
         self.set(converted_x, converted_y, color);
     }
@@ -73,8 +78,6 @@ pub const Canvas = struct {
         while (y < self.height) : (y += 1) {
             var x: u32 = 0;
             while (x < self.width) : (x += 1) {
-                std.debug.print("[!] - Printing pixel at x {} and y {}...\n", .{ x, y });
-
                 const color = self.get(x, y);
                 const r = color >> 16 & 0xFF;
                 const g = color >> 8 & 0xFF;
