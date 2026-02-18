@@ -35,23 +35,22 @@ pub const scene = Scene{
 /// Trace a ray through 3D space to determine a pixel's color.
 fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) u24 {
     var closest_t = std.math.inf(f64);
-    var closest_sphere: ?*const Sphere = null;
+    var closest_color: u24 = background_color;
 
     for (scene.spheres) |sphere| {
         const t = sphere.intersect_ray(origin, direction);
         if (t[0] >= start and t[0] <= finish and t[0] < closest_t) {
+            std.debug.print("[!] - Hit a sphere!\n", .{});
             closest_t = t[0];
-            closest_sphere = &sphere;
+            closest_color = sphere.color;
         }
         if (t[1] >= start and t[1] <= finish and t[1] < closest_t) {
+            std.debug.print("[!] - Hit a sphere!\n", .{});
             closest_t = t[1];
-            closest_sphere = &sphere;
+            closest_color = sphere.color;
         }
     }
-    if (closest_sphere == null) {
-        return background_color;
-    }
-    return closest_sphere.?.color;
+    return closest_color;
 }
 
 pub fn main() !void {
