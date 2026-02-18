@@ -6,6 +6,7 @@ const Sphere = @import("Sphere.zig").Sphere;
 
 const canvas_width = 1080;
 const canvas_height = 1080;
+const background_color: u24 = 0x222222;
 
 const Scene = struct {
     spheres: [3]Sphere, // TODO: Dynamic size of spheres array
@@ -48,7 +49,7 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) u24 {
         }
     }
     if (closest_sphere == null) {
-        return 0x222222;
+        return background_color;
     }
     return closest_sphere.?.color;
 }
