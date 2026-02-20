@@ -3,16 +3,11 @@ const Canvas = @import("Canvas.zig").Canvas;
 const Point3 = @import("Point3.zig").Point3;
 const Vec3 = @import("Vec3.zig").Vec3;
 const Sphere = @import("Sphere.zig").Sphere;
+const Scene = @import("Scene.zig").Scene;
 
 const canvas_width = 1080;
 const canvas_height = 1080;
 const background_color: u24 = 0x222222;
-
-const Scene = struct {
-    spheres: [3]Sphere, // TODO: Dynamic size of spheres array
-    projection_plane_d: f64,
-    viewport_aspect_ratio: f64,
-};
 
 pub const scene = Scene{
     .spheres = [_]Sphere{ Sphere{
