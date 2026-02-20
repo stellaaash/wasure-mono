@@ -32,7 +32,7 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) u24 {
     var closest_t = std.math.inf(f64);
     var closest_color: u24 = background_color;
 
-    for (scene.spheres) |sphere| {
+    for (&scene.spheres) |*sphere| {
         const t = sphere.intersect_ray(origin, direction);
         if (t[0] >= start and t[0] <= finish and t[0] < closest_t) {
             closest_t = t[0];
