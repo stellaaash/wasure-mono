@@ -25,11 +25,15 @@ pub const Canvas = struct {
     }
 
     pub fn get(self: *const Canvas, x: usize, y: usize) u24 {
+        std.debug.assert(x < self.width);
+        std.debug.assert(y < self.height);
         return self.data[y * self.width + x];
     }
 
     /// Set a pixel's color, with the origin to the top left of the canvas
     fn set(self: *Canvas, x: usize, y: usize, color: u24) void {
+        std.debug.assert(x < self.width);
+        std.debug.assert(y < self.height);
         self.data[y * self.width + x] = color;
     }
 
@@ -60,6 +64,7 @@ pub const Canvas = struct {
         self.set(converted_x, converted_y, color);
     }
 
+    /// Write the current state of the Canvas to the file at `path` in PPM P3 format.
     pub fn write_to_file(self: *Canvas, path: []const u8) !void {
         std.fs.cwd().deleteFile(path) catch {};
         const file = try std.fs.cwd().createFile(path, .{});
