@@ -25,12 +25,9 @@ pub const scene = Scene{
         .radius = 1,
     } },
     .lights = [_]Light{
-        Light{
-            .type = .ambient,
-            .intensity = 0.2,
-        },
-        Light{ .type = .point, .intensity = 0.6, .position = Point3{ .x = 2, .y = 1, .z = 0 } },
-        Light{ .type = .directional, .intensity = 0.2, .direction = Vec3{ .x = 1, .y = 4, .z = 4 } },
+        Light{ .type = .ambient, .intensity = 0.2, .position = null, .direction = null },
+        Light{ .type = .point, .intensity = 0.6, .position = Point3{ .x = 2, .y = 1, .z = 0 }, .direction = null },
+        Light{ .type = .directional, .intensity = 0.2, .position = null, .direction = Vec3{ .x = 1, .y = 4, .z = 4 } },
     },
     .projection_plane_d = 1,
     .viewport_aspect_ratio = 1,

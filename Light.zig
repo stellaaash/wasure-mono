@@ -1,5 +1,6 @@
 const std = @import("std");
 
+const Point3 = @import("Point3.zig").Point3;
 const Vec3 = @import("Vec3.zig").Vec3;
 
 /// Describes the type of a light
@@ -16,6 +17,6 @@ pub const Light_Type = enum {
 pub const Light = struct {
     type: Light_Type,
     intensity: f32,
-    position: ?Vec3,
+    position: ?Point3,
     direction: ?Vec3,
 };
