@@ -16,5 +16,6 @@ pub const Light_Type = enum {
 pub const Light = struct {
     type: Light_Type,
     intensity: f32,
-    direction: Vec3,
+    position: ?Vec3,
+    direction: ?Vec3,
 };

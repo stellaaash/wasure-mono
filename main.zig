@@ -3,6 +3,7 @@ const Canvas = @import("Canvas.zig").Canvas;
 const Point3 = @import("Point3.zig").Point3;
 const Vec3 = @import("Vec3.zig").Vec3;
 const Sphere = @import("Sphere.zig").Sphere;
+const Light = @import("Light.zig").Light;
 const Scene = @import("Scene.zig").Scene;
 
 const canvas_width = 1080;
@@ -23,6 +24,14 @@ pub const scene = Scene{
         .color = 0x0000FF,
         .radius = 1,
     } },
+    .lights = [_]Light{
+        Light{
+            .type = .ambient,
+            .intensity = 0.2,
+        },
+        Light{ .type = .point, .intensity = 0.6, .position = Point3{ .x = 2, .y = 1, .z = 0 } },
+        Light{ .type = .directional, .intensity = 0.2, .direction = Vec3{ .x = 1, .y = 4, .z = 4 } },
+    },
     .projection_plane_d = 1,
     .viewport_aspect_ratio = 1,
 };
