@@ -36,7 +36,7 @@ pub const scene = Scene{
 /// Trace a ray through 3D space to determine a pixel's color.
 fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) u24 {
     var closest_t = std.math.inf(f64);
-    var closest_sphere: *Sphere = null;
+    var closest_sphere: ?*const Sphere = null;
 
     for (&scene.spheres) |*sphere| {
         const t = sphere.intersect_ray(origin, direction);
