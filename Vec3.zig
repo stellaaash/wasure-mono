@@ -5,6 +5,10 @@ pub const Vec3 = struct {
     y: f64,
     z: f64,
 
+    pub fn length(self: Vec3) Vec3 {
+        return std.math.sqrt(self.dot(self));
+    }
+
     pub fn dot(self: Vec3, other: Vec3) f64 {
         return self.x * other.x + self.y * other.y + self.z * other.z;
     }
