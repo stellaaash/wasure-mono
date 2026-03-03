@@ -1,5 +1,6 @@
 const std = @import("std");
 const Vec3 = @import("Vec3.zig").Vec3;
+const Color = @import("Color.zig").Color;
 const scene = @import("root").scene;
 
 const Point3 = struct { x: f32, y: f32, z: f32 };
@@ -31,10 +32,10 @@ pub const Canvas = struct {
     }
 
     /// Set a pixel's color, with the origin to the top left of the canvas
-    fn set(self: *Canvas, x: usize, y: usize, color: u24) void {
+    fn set(self: *Canvas, x: usize, y: usize, color: Color) void {
         std.debug.assert(x < self.width);
         std.debug.assert(y < self.height);
-        self.data[y * self.width + x] = color;
+        self.data[y * self.width + x] = color.to_u24();
     }
 
     /// Convert a pixel on the canvas to a Vector pointing to the point on the 3D viewport
@@ -52,7 +53,7 @@ pub const Canvas = struct {
 
     /// Put a pixel on the canvas, using a coordinate system with the origin
     /// at the center of the canvas
-    pub fn put_pixel(self: *Canvas, x: i32, y: i32, color: u24) void {
+    pub fn put_pixel(self: *Canvas, x: i32, y: i32, color: Color) void {
         std.debug.assert(x < self.width);
         std.debug.assert(y < self.height);
 

@@ -5,23 +5,24 @@ const Vec3 = @import("Vec3.zig").Vec3;
 const Sphere = @import("Sphere.zig").Sphere;
 const Light = @import("Light.zig").Light;
 const Scene = @import("Scene.zig").Scene;
+const Color = @import("Color.zig").Color;
 
 const canvas_width = 1080;
 const canvas_height = 1080;
-const background_color: u24 = 0x222222;
+const background_color: Color = Color{ .r = 22, .g = 22, .b = 22 };
 
 pub const scene = Scene{
     .spheres = [_]Sphere{ Sphere{
         .position = Point3{ .x = 0, .y = 0, .z = 3 },
-        .color = 0xFF0000,
+        .color = Color{ .r = 255, .g = 0, .b = 0 },
         .radius = 1,
     }, Sphere{
         .position = Point3{ .x = -1, .y = 1, .z = 4 },
-        .color = 0x00FF00,
+        .color = Color{ .r = 0, .g = 255, .b = 0 },
         .radius = 1,
     }, Sphere{
         .position = Point3{ .x = 1, .y = -1, .z = 2 },
-        .color = 0x0000FF,
+        .color = Color{ .r = 0, .g = 0, .b = 255 },
         .radius = 1,
     } },
     .lights = [_]Light{
@@ -34,7 +35,7 @@ pub const scene = Scene{
 };
 
 /// Trace a ray through 3D space to determine a pixel's color.
-fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) u24 {
+fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
     var closest_t = std.math.inf(f64);
     var closest_sphere: ?*const Sphere = null;
 
@@ -71,6 +72,7 @@ pub fn main() !void {
         while (x < canvas_width / 2) : (x += 1) {
             const direction = canvas.to_viewport(x, y);
             const color = trace_ray(origin, direction, 1, std.math.inf(f32));
+
             canvas.put_pixel(x, y, color);
         }
     }
