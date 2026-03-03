@@ -13,9 +13,19 @@ pub const Color = struct {
         return r | g | b;
     }
 
-    pub fn add(comptime T: type, self: Color, number: T) Color {
-        self.r += @trunc(number);
-        self.g += @trunc(number);
-        self.b += @trunc(number);
+    pub fn add(self: Color, number: f64) Color {
+        return Color{
+            .r = @intFromFloat(@as(f64, @floatFromInt(self.r)) + number),
+            .g = @intFromFloat(@as(f64, @floatFromInt(self.g)) + number),
+            .b = @intFromFloat(@as(f64, @floatFromInt(self.b)) + number),
+        };
+    }
+
+    pub fn multiply(self: Color, number: f64) Color {
+        return Color{
+            .r = @intFromFloat(@as(f64, @floatFromInt(self.r)) * number),
+            .g = @intFromFloat(@as(f64, @floatFromInt(self.g)) * number),
+            .b = @intFromFloat(@as(f64, @floatFromInt(self.b)) * number),
+        };
     }
 };

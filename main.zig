@@ -34,6 +34,31 @@ pub const scene = Scene{
     .viewport_aspect_ratio = 1,
 };
 
+/// Computes the intensity of the lightning hitting a particular point.
+fn compute_lightning(point: Point3, normal: Vec3) f64 {
+    var intensity: f64 = 0.0;
+
+    for (scene.lights) |light| {
+        if (light.type == .ambient) {
+            intensity += light.intensity;
+        } else {
+            var light_direction: Vec3 = undefined;
+            if (light.type == .point) {
+                light_direction = light.position.?.subtract(Point3, point);
+            } else {
+                light_direction = light.direction.?;
+            }
+
+            const n_dot_l = normal.dot(light_direction);
+            if (n_dot_l > 0) {
+                intensity += light.intensity * n_dot_l / (normal.length() * light_direction.length());
+            }
+        }
+    }
+
+    return intensity;
+}
+
 /// Trace a ray through 3D space to determine a pixel's color.
 fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
     var closest_t = std.math.inf(f64);
@@ -50,11 +75,13 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
             closest_sphere = sphere;
         }
     }
-    if (closest_sphere != null) {
-        return closest_sphere.?.*.color;
-    } else {
-        return background_color;
-    }
+
+    if (closest_sphere == null) return background_color;
+
+    const point = origin.add(Vec3, direction.scale(@TypeOf(closest_t), closest_t));
+    var normal = point.subtract(Point3, closest_sphere.?.*.position);
+    normal = normal.divide(f64, normal.length());
+    return closest_sphere.?.*.color.multiply(compute_lightning(point, normal));
 }
 
 pub fn main() !void {

@@ -5,7 +5,19 @@ pub const Vec3 = struct {
     y: f64,
     z: f64,
 
-    pub fn length(self: Vec3) Vec3 {
+    pub fn scale(self: Vec3, comptime T: type, scalar: T) Vec3 {
+        return Vec3{
+            .x = self.x * scalar,
+            .y = self.y * scalar,
+            .z = self.z * scalar,
+        };
+    }
+
+    pub fn divide(self: Vec3, comptime T: type, scalar: T) Vec3 {
+        return self.scale(T, 1 / scalar);
+    }
+
+    pub fn length(self: Vec3) f64 {
         return std.math.sqrt(self.dot(self));
     }
 
