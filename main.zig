@@ -49,7 +49,11 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) u24 {
             closest_sphere = sphere;
         }
     }
-    return closest_color;
+    if (closest_sphere != null) {
+        return closest_sphere.?.*.color;
+    } else {
+        return background_color;
+    }
 }
 
 pub fn main() !void {
