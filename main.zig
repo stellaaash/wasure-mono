@@ -24,6 +24,10 @@ pub const scene = Scene{
         .position = Point3{ .x = 1, .y = -1, .z = 2 },
         .color = Color{ .r = 0, .g = 0, .b = 255 },
         .radius = 1,
+    }, Sphere{
+        .position = Point3{ .x = 0, .y = -50, .z = 0 },
+        .color = Color{ .r = 255, .g = 255, .b = 0 },
+        .radius = 50,
     } },
     .lights = [_]Light{
         Light{ .type = .ambient, .intensity = 0.2, .position = null, .direction = null },
