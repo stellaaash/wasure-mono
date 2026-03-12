@@ -7,6 +7,7 @@ pub const Sphere = struct {
     position: Point3,
     radius: f64,
     color: Color,
+    specular: i32,
 
     /// Computes intersection points between a ray and a sphere
     pub fn intersect_ray(self: Sphere, origin: Point3, direction: Vec3) [2]f64 {
