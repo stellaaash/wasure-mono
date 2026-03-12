@@ -5,32 +5,64 @@ pub const Vec3 = struct {
     y: f64,
     z: f64,
 
-    pub fn add(self: Vec3, other: Vec3) Vec3 {
-        return Vec3{
-            .x = self.x + other.x,
-            .y = self.y + other.y,
-            .z = self.z + other.z,
-        };
+    pub fn add(self: Vec3, comptime T: type, other: T) Vec3 {
+        if (T == Vec3) {
+            return Vec3{
+                .x = self.x + other.x,
+                .y = self.y + other.y,
+                .z = self.z + other.z,
+            };
+        } else {
+            return Vec3{
+                .x = self.x + other,
+                .y = self.y + other,
+                .z = self.z + other,
+            };
+        }
     }
 
-    pub fn sub(self: Vec3, other: Vec3) Vec3 {
-        return Vec3{
-            .x = self.x - other.x,
-            .y = self.y - other.y,
-            .z = self.z - other.z,
-        };
+    pub fn sub(self: Vec3, comptime T: type, other: T) Vec3 {
+        if (T == Vec3) {
+            return Vec3{
+                .x = self.x - other.x,
+                .y = self.y - other.y,
+                .z = self.z - other.z,
+            };
+        } else {
+            return Vec3{
+                .x = self.x - other,
+                .y = self.y - other,
+                .z = self.z - other,
+            };
+        }
     }
 
-    pub fn scale(self: Vec3, comptime T: type, scalar: T) Vec3 {
-        return Vec3{
-            .x = self.x * scalar,
-            .y = self.y * scalar,
-            .z = self.z * scalar,
-        };
+    pub fn scale(self: Vec3, comptime T: type, other: T) Vec3 {
+        if (T == Vec3) {
+            return Vec3{
+                .x = self.x * other.x,
+                .y = self.y * other.y,
+                .z = self.z * other.z,
+            };
+        } else {
+            return Vec3{
+                .x = self.x * other,
+                .y = self.y * other,
+                .z = self.z * other,
+            };
+        }
     }
 
-    pub fn divide(self: Vec3, comptime T: type, scalar: T) Vec3 {
-        return self.scale(T, 1 / scalar);
+    pub fn divide(self: Vec3, comptime T: type, other: T) Vec3 {
+        if (T == Vec3) {
+            return Vec3{
+                .x = self.x / other.x,
+                .y = self.y / other.y,
+                .z = self.z / other.z,
+            };
+        } else {
+            return self.scale(T, 1.0 / other);
+        }
     }
 
     pub fn length(self: Vec3) f64 {

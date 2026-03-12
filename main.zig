@@ -89,7 +89,10 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
     const point = origin.add(Vec3, direction.scale(@TypeOf(closest_t), closest_t));
     var normal = point.subtract(Point3, closest_sphere.?.*.position);
     normal = normal.divide(f64, normal.length());
-    return closest_sphere.?.*.color.multiply(compute_lightning(point, normal));
+    return closest_sphere.?.*.color.multiply(f64, compute_lightning(
+        point,
+        normal,
+    ));
 }
 
 pub fn main() !void {

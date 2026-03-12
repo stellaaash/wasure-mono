@@ -13,19 +13,35 @@ pub const Color = struct {
         return r | g | b;
     }
 
-    pub fn add(self: Color, number: f64) Color {
-        return Color{
-            .r = @intFromFloat(@as(f64, @floatFromInt(self.r)) + number),
-            .g = @intFromFloat(@as(f64, @floatFromInt(self.g)) + number),
-            .b = @intFromFloat(@as(f64, @floatFromInt(self.b)) + number),
-        };
+    pub fn add(self: Color, comptime T: type, other: T) Color {
+        if (T == Color) {
+            return Color{
+                .r = self.r +| other.r,
+                .g = self.g +| other.g,
+                .b = self.b +| other.b,
+            };
+        } else {
+            return Color{
+                .r = @intFromFloat(@as(f64, @floatFromInt(self.r)) + other),
+                .g = @intFromFloat(@as(f64, @floatFromInt(self.g)) + other),
+                .b = @intFromFloat(@as(f64, @floatFromInt(self.b)) + other),
+            };
+        }
     }
 
-    pub fn multiply(self: Color, number: f64) Color {
-        return Color{
-            .r = @intFromFloat(@as(f64, @floatFromInt(self.r)) * number),
-            .g = @intFromFloat(@as(f64, @floatFromInt(self.g)) * number),
-            .b = @intFromFloat(@as(f64, @floatFromInt(self.b)) * number),
-        };
+    pub fn multiply(self: Color, comptime T: type, other: T) Color {
+        if (T == Color) {
+            return Color{
+                .r = @intFromFloat(@as(f64, @floatFromInt(self.r)) * @as(f64, @floatFromInt(other.r)) / 255.0),
+                .g = @intFromFloat(@as(f64, @floatFromInt(self.g)) * @as(f64, @floatFromInt(other.g)) / 255.0),
+                .b = @intFromFloat(@as(f64, @floatFromInt(self.b)) * @as(f64, @floatFromInt(other.b)) / 255.0),
+            };
+        } else {
+            return Color{
+                .r = @intFromFloat(@as(f64, @floatFromInt(self.r)) * other),
+                .g = @intFromFloat(@as(f64, @floatFromInt(self.g)) * other),
+                .b = @intFromFloat(@as(f64, @floatFromInt(self.b)) * other),
+            };
+        }
     }
 };
