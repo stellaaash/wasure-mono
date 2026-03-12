@@ -5,6 +5,22 @@ pub const Vec3 = struct {
     y: f64,
     z: f64,
 
+    pub fn add(self: Vec3, other: Vec3) Vec3 {
+        return Vec3{
+            .x = self.x + other.x,
+            .y = self.y + other.y,
+            .z = self.z + other.z,
+        };
+    }
+
+    pub fn sub(self: Vec3, other: Vec3) Vec3 {
+        return Vec3{
+            .x = self.x - other.x,
+            .y = self.y - other.y,
+            .z = self.z - other.z,
+        };
+    }
+
     pub fn scale(self: Vec3, comptime T: type, scalar: T) Vec3 {
         return Vec3{
             .x = self.x * scalar,
