@@ -43,7 +43,7 @@ pub const scene = Scene{
 };
 
 /// Computes the intensity of the lightning hitting a particular point.
-fn compute_lightning(point: Point3, normal: Vec3) f64 {
+fn compute_lightning(point: Point3, normal: Vec3, view: Vec3, specular: f64) f64 {
     var intensity: f64 = 0.0;
 
     for (scene.lights) |light| {
@@ -57,9 +57,19 @@ fn compute_lightning(point: Point3, normal: Vec3) f64 {
                 light_direction = light.direction.?;
             }
 
+            // Diffuse
             const n_dot_l = normal.dot(light_direction);
             if (n_dot_l > 0) {
                 intensity += light.intensity * n_dot_l / (normal.length() * light_direction.length());
+            }
+
+            // Specular
+            if (specular != -1) {
+                const reflection = normal.scale(2.0 * normal.dot(light_direction)).sub(light_direction);
+                const r_dot_v = reflection.dot(view);
+                if (r_dot_v > 0) {
+                    intensity += light.intensity * std.math.pow(f64, r_dot_v / (reflection.length() * view.length()), specular);
+                }
             }
         }
     }
@@ -92,6 +102,8 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
     return closest_sphere.?.*.color.multiply(compute_lightning(
         point,
         normal,
+        direction.scale(-1),
+        closest_sphere.?.*.specular,
     ));
 }
 
