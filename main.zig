@@ -14,22 +14,22 @@ const background_color: Color = Color{ .r = 22, .g = 22, .b = 22 };
 pub const scene = Scene{
     .spheres = [_]Sphere{ Sphere{
         .position = Point3{ .x = 0, .y = 0, .z = 3 },
-        .color = Color{ .r = 255, .g = 0, .b = 0 },
+        .color = Color{ .r = 1.0, .g = 0.0, .b = 0.0 },
         .radius = 1,
         .specular = 10,
     }, Sphere{
         .position = Point3{ .x = -1, .y = 1, .z = 4 },
-        .color = Color{ .r = 0, .g = 255, .b = 0 },
+        .color = Color{ .r = 0.0, .g = 1.0, .b = 0.0 },
         .radius = 1,
         .specular = 500,
     }, Sphere{
         .position = Point3{ .x = 1, .y = -1, .z = 2 },
-        .color = Color{ .r = 0, .g = 0, .b = 255 },
+        .color = Color{ .r = 0.0, .g = 0.0, .b = 1.0 },
         .radius = 1,
         .specular = 500,
     }, Sphere{
         .position = Point3{ .x = 0, .y = -50, .z = 0 },
-        .color = Color{ .r = 255, .g = 255, .b = 0 },
+        .color = Color{ .r = 1.0, .g = 1.0, .b = 0.0 },
         .radius = 50,
         .specular = 1000,
     } },
