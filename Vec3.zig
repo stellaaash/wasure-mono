@@ -5,8 +5,8 @@ pub const Vec3 = struct {
     y: f64,
     z: f64,
 
-    pub fn add(self: Vec3, comptime T: type, other: T) Vec3 {
-        if (T == Vec3) {
+    pub fn add(self: Vec3, other: anytype) Vec3 {
+        if (@TypeOf(self) == Vec3) {
             return Vec3{
                 .x = self.x + other.x,
                 .y = self.y + other.y,
@@ -21,8 +21,8 @@ pub const Vec3 = struct {
         }
     }
 
-    pub fn sub(self: Vec3, comptime T: type, other: T) Vec3 {
-        if (T == Vec3) {
+    pub fn sub(self: Vec3, other: anytype) Vec3 {
+        if (@TypeOf(other) == Vec3) {
             return Vec3{
                 .x = self.x - other.x,
                 .y = self.y - other.y,
@@ -37,8 +37,8 @@ pub const Vec3 = struct {
         }
     }
 
-    pub fn scale(self: Vec3, comptime T: type, other: T) Vec3 {
-        if (T == Vec3) {
+    pub fn scale(self: Vec3, other: anytype) Vec3 {
+        if (@TypeOf(other) == Vec3) {
             return Vec3{
                 .x = self.x * other.x,
                 .y = self.y * other.y,
@@ -53,15 +53,15 @@ pub const Vec3 = struct {
         }
     }
 
-    pub fn divide(self: Vec3, comptime T: type, other: T) Vec3 {
-        if (T == Vec3) {
+    pub fn divide(self: Vec3, other: anytype) Vec3 {
+        if (@TypeOf(other) == Vec3) {
             return Vec3{
                 .x = self.x / other.x,
                 .y = self.y / other.y,
                 .z = self.z / other.z,
             };
         } else {
-            return self.scale(T, 1.0 / other);
+            return self.scale(1.0 / other);
         }
     }
 

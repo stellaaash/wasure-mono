@@ -13,8 +13,8 @@ pub const Color = struct {
         return r | g | b;
     }
 
-    pub fn add(self: Color, comptime T: type, other: T) Color {
-        if (T == Color) {
+    pub fn add(self: Color, other: anytype) Color {
+        if (@TypeOf(other) == Color) {
             return Color{
                 .r = self.r +| other.r,
                 .g = self.g +| other.g,
@@ -29,8 +29,8 @@ pub const Color = struct {
         }
     }
 
-    pub fn multiply(self: Color, comptime T: type, other: T) Color {
-        if (T == Color) {
+    pub fn multiply(self: Color, other: anytype) Color {
+        if (@TypeOf(other) == Color) {
             return Color{
                 .r = @intFromFloat(@as(f64, @floatFromInt(self.r)) * @as(f64, @floatFromInt(other.r)) / 255.0),
                 .g = @intFromFloat(@as(f64, @floatFromInt(self.g)) * @as(f64, @floatFromInt(other.g)) / 255.0),

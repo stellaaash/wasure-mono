@@ -52,7 +52,7 @@ fn compute_lightning(point: Point3, normal: Vec3) f64 {
         } else {
             var light_direction: Vec3 = undefined;
             if (light.type == .point) {
-                light_direction = light.position.?.subtract(Point3, point);
+                light_direction = light.position.?.subtract(point);
             } else {
                 light_direction = light.direction.?;
             }
@@ -86,10 +86,10 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
 
     if (closest_sphere == null) return background_color;
 
-    const point = origin.add(Vec3, direction.scale(@TypeOf(closest_t), closest_t));
-    var normal = point.subtract(Point3, closest_sphere.?.*.position);
-    normal = normal.divide(f64, normal.length());
-    return closest_sphere.?.*.color.multiply(f64, compute_lightning(
+    const point = origin.add(direction.scale(closest_t));
+    var normal = point.subtract(closest_sphere.?.*.position);
+    normal = normal.divide(normal.length());
+    return closest_sphere.?.*.color.multiply(compute_lightning(
         point,
         normal,
     ));

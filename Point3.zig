@@ -7,8 +7,8 @@ pub const Point3 = struct {
     y: f64,
     z: f64,
 
-    pub fn add(self: Point3, comptime T: type, other: T) Point3 {
-        if (T == Point3 or T == Vec3) {
+    pub fn add(self: Point3, other: anytype) Point3 {
+        if (@TypeOf(other) == Point3 or @TypeOf(other) == Vec3) {
             return Point3{
                 .x = self.x + other.x,
                 .y = self.y + other.y,
@@ -23,14 +23,14 @@ pub const Point3 = struct {
         }
     }
 
-    pub fn subtract(self: Point3, comptime T: type, other: T) if (T == Point3) Vec3 else Point3 {
-        if (T == Point3) {
+    pub fn subtract(self: Point3, other: anytype) if (@TypeOf(other) == Point3) Vec3 else Point3 {
+        if (@TypeOf(other) == Point3) {
             return Vec3{
                 .x = self.x - other.x,
                 .y = self.y - other.y,
                 .z = self.z - other.z,
             };
-        } else if (T == Vec3) {
+        } else if (@TypeOf(other) == Vec3) {
             return Point3{
                 .x = self.x - other.x,
                 .y = self.y - other.y,
