@@ -15,29 +15,29 @@ const recursion_limit = 3;
 
 pub const scene = Scene{
     .spheres = [_]Sphere{ Sphere{
-        .position = Point3{ .x = 0, .y = 0, .z = 3 },
+        .position = Point3{ .x = 0, .y = -1, .z = 3 },
         .color = Color{ .r = 1.0, .g = 0.0, .b = 0.0 },
         .radius = 1,
-        .specular = 10,
-        .reflective = 0.6,
-    }, Sphere{
-        .position = Point3{ .x = -1, .y = 1, .z = 4 },
-        .color = Color{ .r = 0.0, .g = 1.0, .b = 0.0 },
-        .radius = 1,
         .specular = 500,
-        .reflective = 0.6,
+        .reflective = 0.2,
     }, Sphere{
-        .position = Point3{ .x = 1, .y = -1, .z = 2 },
+        .position = Point3{ .x = -2, .y = 0, .z = 4 },
         .color = Color{ .r = 0.0, .g = 0.0, .b = 1.0 },
         .radius = 1,
         .specular = 500,
-        .reflective = 0.6,
+        .reflective = 0.3,
     }, Sphere{
-        .position = Point3{ .x = 0, .y = -50.5, .z = 0 },
+        .position = Point3{ .x = 2, .y = 0, .z = 4 },
+        .color = Color{ .r = 0.0, .g = 1.0, .b = 0.0 },
+        .radius = 1,
+        .specular = 10,
+        .reflective = 0.4,
+    }, Sphere{
+        .position = Point3{ .x = 0, .y = -51, .z = 0 },
         .color = Color{ .r = 1.0, .g = 1.0, .b = 0.0 },
         .radius = 50,
         .specular = 1000,
-        .reflective = 0.6,
+        .reflective = 0.5,
     } },
     .lights = [_]Light{
         Light{ .type = .ambient, .intensity = 0.2, .position = null, .direction = null },
