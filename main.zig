@@ -11,27 +11,33 @@ const canvas_width = 1080;
 const canvas_height = 1080;
 const background_color: Color = Color{ .r = 22, .g = 22, .b = 22 };
 
+const recursion_limit = 3;
+
 pub const scene = Scene{
     .spheres = [_]Sphere{ Sphere{
         .position = Point3{ .x = 0, .y = 0, .z = 3 },
         .color = Color{ .r = 1.0, .g = 0.0, .b = 0.0 },
         .radius = 1,
         .specular = 10,
+        .reflective = 0.6,
     }, Sphere{
         .position = Point3{ .x = -1, .y = 1, .z = 4 },
         .color = Color{ .r = 0.0, .g = 1.0, .b = 0.0 },
         .radius = 1,
         .specular = 500,
+        .reflective = 0.6,
     }, Sphere{
         .position = Point3{ .x = 1, .y = -1, .z = 2 },
         .color = Color{ .r = 0.0, .g = 0.0, .b = 1.0 },
         .radius = 1,
         .specular = 500,
+        .reflective = 0.6,
     }, Sphere{
         .position = Point3{ .x = 0, .y = -50.5, .z = 0 },
         .color = Color{ .r = 1.0, .g = 1.0, .b = 0.0 },
         .radius = 50,
         .specular = 1000,
+        .reflective = 0.6,
     } },
     .lights = [_]Light{
         Light{ .type = .ambient, .intensity = 0.2, .position = null, .direction = null },
@@ -113,7 +119,7 @@ fn closest_intersect(origin: Point3, direction: Vec3, start: f64, finish: f64) s
 }
 
 /// Trace a ray through 3D space to determine a pixel's color.
-fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
+fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64, recursion_depth: i32) Color {
     const result = closest_intersect(origin, direction, start, finish);
     const closest_sphere = result[0];
     const closest_t = result[1];
@@ -123,12 +129,17 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
     const point = origin.add(direction.scale(closest_t));
     var normal = point.subtract(closest_sphere.?.*.position);
     normal = normal.divide(normal.length());
-    return closest_sphere.?.*.color.multiply(compute_lightning(
-        point,
-        normal,
-        direction.scale(-1),
-        closest_sphere.?.*.specular,
-    ));
+    const local_color = closest_sphere.?.color.multiply(compute_lightning(point, normal, direction.scale(-1), closest_sphere.?.specular));
+
+    const reflective = closest_sphere.?.reflective;
+    if (recursion_depth <= 0 or reflective <= 0) {
+        return local_color;
+    }
+
+    const reflected = reflect_ray(direction.scale(-1), normal);
+    const reflected_color = trace_ray(point, reflected, 0.001, std.math.inf(f64), recursion_depth - 1);
+
+    return local_color.multiply(reflected_color.multiply(reflective).add(1.0 - reflective));
 }
 
 pub fn main() !void {
@@ -145,7 +156,7 @@ pub fn main() !void {
         var x: i32 = -canvas_width / 2;
         while (x < canvas_width / 2) : (x += 1) {
             const direction = canvas.to_viewport(x, y);
-            const color = trace_ray(origin, direction, 1, std.math.inf(f32));
+            const color = trace_ray(origin, direction, 1, std.math.inf(f32), recursion_limit);
 
             canvas.put_pixel(x, y, color);
         }
