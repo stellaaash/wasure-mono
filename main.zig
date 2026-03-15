@@ -28,7 +28,7 @@ pub const scene = Scene{
         .radius = 1,
         .specular = 500,
     }, Sphere{
-        .position = Point3{ .x = 0, .y = -50, .z = 0 },
+        .position = Point3{ .x = 0, .y = -50.5, .z = 0 },
         .color = Color{ .r = 1.0, .g = 1.0, .b = 0.0 },
         .radius = 50,
         .specular = 1000,
@@ -77,10 +77,10 @@ fn compute_lightning(point: Point3, normal: Vec3, view: Vec3, specular: f64) f64
     return intensity;
 }
 
-/// Trace a ray through 3D space to determine a pixel's color.
-fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
-    var closest_t = std.math.inf(f64);
+/// Computes the closest intersecting point between a ray and objects in the scene.
+fn closest_intersect(origin: Point3, direction: Vec3, start: f64, finish: f64) struct { ?*const Sphere, f64 } {
     var closest_sphere: ?*const Sphere = null;
+    var closest_t = std.math.inf(f64);
 
     for (&scene.spheres) |*sphere| {
         const t = sphere.intersect_ray(origin, direction);
@@ -93,6 +93,15 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
             closest_sphere = sphere;
         }
     }
+
+    return .{ closest_sphere, closest_t };
+}
+
+/// Trace a ray through 3D space to determine a pixel's color.
+fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64) Color {
+    const result = closest_intersect(origin, direction, start, finish);
+    const closest_sphere = result[0];
+    const closest_t = result[1];
 
     if (closest_sphere == null) return background_color;
 
