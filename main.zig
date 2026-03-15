@@ -45,6 +45,7 @@ pub const scene = Scene{
 /// Computes the intensity of the lightning hitting a particular point.
 fn compute_lightning(point: Point3, normal: Vec3, view: Vec3, specular: f64) f64 {
     var intensity: f64 = 0.0;
+    var t_max: f64 = undefined;
 
     for (scene.lights) |light| {
         if (light.type == .ambient) {
@@ -53,8 +54,18 @@ fn compute_lightning(point: Point3, normal: Vec3, view: Vec3, specular: f64) f64
             var light_direction: Vec3 = undefined;
             if (light.type == .point) {
                 light_direction = light.position.?.subtract(point);
+                t_max = 1;
             } else {
                 light_direction = light.direction.?;
+                t_max = std.math.inf(@TypeOf(t_max));
+            }
+
+            // Shadows
+            const result = closest_intersect(point, light_direction, 0.001, t_max);
+            const shadowed_sphere = result[0];
+            // const shadowed_t = result[1];
+            if (shadowed_sphere != null) {
+                continue;
             }
 
             // Diffuse
