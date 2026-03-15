@@ -42,6 +42,10 @@ pub const scene = Scene{
     .viewport_aspect_ratio = 1,
 };
 
+fn reflect_ray(ray: Vec3, axis: Vec3) Vec3 {
+    return axis.scale(2.0 * axis.dot(ray)).sub(ray);
+}
+
 /// Computes the intensity of the lightning hitting a particular point.
 fn compute_lightning(point: Point3, normal: Vec3, view: Vec3, specular: f64) f64 {
     var intensity: f64 = 0.0;
@@ -76,7 +80,7 @@ fn compute_lightning(point: Point3, normal: Vec3, view: Vec3, specular: f64) f64
 
             // Specular
             if (specular != -1) {
-                const reflection = normal.scale(2.0 * normal.dot(light_direction)).sub(light_direction);
+                const reflection = reflect_ray(light_direction, normal);
                 const r_dot_v = reflection.dot(view);
                 if (r_dot_v > 0) {
                     intensity += light.intensity * std.math.pow(f64, r_dot_v / (reflection.length() * view.length()), specular);
