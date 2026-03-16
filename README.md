@@ -6,7 +6,7 @@ using the [Computer Graphics from Scratch]() book by Gabriel Gambetta.
 ## Screenshots
 > The PlayStation can produce mind-boggling effects.
 
-<img width="1105" height="1149" alt="image" src="https://github.com/user-attachments/assets/bd788a56-53ae-4439-877e-6ba7e0f6f226" />
+<img width="600" height="600" alt="image" src="https://github.com/user-attachments/assets/f50a0de6-fac5-47ab-87d7-c02e08ad3864" />
 
 ## Usage
 ```bash
