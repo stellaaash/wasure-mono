@@ -76,4 +76,9 @@ pub const Vec3 = struct {
     pub fn cross(self: Vec3, other: Vec3) Vec3 {
         return Vec3{ .x = self.y * other.z - self.z * other.y, .y = self.z * other.x - self.x * other.z, .z = self.x * other.y - self.y * other.x };
     }
+
+    /// Normalize a vector to make it of unit length.
+    pub fn normalize(self: Vec3) Vec3 {
+        return self.divide(self.length());
+    }
 };
