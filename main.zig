@@ -48,6 +48,36 @@ pub const scene = Scene{
     .viewport_aspect_ratio = 1,
 };
 
+/// Represents the up vector in our 3D world.
+pub const world_up: Vec3 = .{ .x = 0.0, .y = 1.0, .z = 0.0 };
+/// The camera's position in the 3D world.
+pub const camera_position: Point3 = .{ .x = 0.0, .y = 0.0, .z = 0.0 };
+/// The vector the camera needs to look towards.
+pub const camera_rotation: Vec3 = .{
+    .x = 0,
+    .y = 0,
+    .z = 1,
+};
+/// The matrix that will be used to rotate the viewport rays in order to make
+/// the actual image to be in the right direction.
+/// Each Vec3 represents a column in a matrix, NOT A LINE.
+pub const rotation_matrix: [3]Vec3 = init_camera();
+
+/// Initializes the rotation matrix according to the camera rotation on program start.
+fn init_camera() [3]Vec3 {
+    var matrix: [3]Vec3 = .{};
+
+    // Start with the Z axis, determined by the camera direction
+    matrix[2] = camera_rotation.normalize();
+    // Then get the cross of Z with our Y reference, to get X
+    matrix[0] = matrix[2].cross(world_up).normalize();
+    // Finally, get the actual up of the camera by crossing Z with our new X
+    matrix[1] = matrix[0].cross(matrix[2]).normalize();
+
+    return matrix;
+}
+
+/// Creates a new vector mirrored based on an axis.
 fn reflect_ray(ray: Vec3, axis: Vec3) Vec3 {
     return axis.scale(2.0 * axis.dot(ray)).sub(ray);
 }
@@ -150,13 +180,12 @@ pub fn main() !void {
     defer canvas.deinit();
 
     // Main loop
-    const origin = Point3{ .x = 0, .y = 0, .z = 0 };
     var y: i32 = -canvas_height / 2;
     while (y < canvas_height / 2) : (y += 1) {
         var x: i32 = -canvas_width / 2;
         while (x < canvas_width / 2) : (x += 1) {
             const direction = canvas.to_viewport(x, y);
-            const color = trace_ray(origin, direction, 1, std.math.inf(f32), recursion_limit);
+            const color = trace_ray(camera_position, direction, 1, std.math.inf(f32), recursion_limit);
 
             canvas.put_pixel(x, y, color);
         }
