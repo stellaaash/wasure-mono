@@ -8,6 +8,9 @@ using the [Computer Graphics from Scratch]() book by Gabriel Gambetta.
 
 <img width="600" height="600" alt="image" src="https://github.com/user-attachments/assets/f50a0de6-fac5-47ab-87d7-c02e08ad3864" />
 
+> Now with arbitrary camera position and rotation!
+<img width="600" height="600" alt="image" src="https://github.com/user-attachments/assets/0d89b5cb-ae4c-4b9d-ab80-1a4384c54dc1" />
+
 ## Usage
 ```bash
 zig run main.zig
