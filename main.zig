@@ -51,10 +51,10 @@ pub const scene = Scene{
 /// Represents the up vector in our 3D world.
 pub const world_up: Vec3 = .{ .x = 0.0, .y = 1.0, .z = 0.0 };
 /// The camera's position in the 3D world.
-pub const camera_position: Point3 = .{ .x = 0.0, .y = 0.0, .z = 0.0 };
+pub const camera_position: Point3 = .{ .x = 5.0, .y = 0.0, .z = -10.0 };
 /// The vector the camera needs to look towards.
 pub const camera_direction: Vec3 = .{
-    .x = 0,
+    .x = -0.4,
     .y = 0,
     .z = 1,
 };
