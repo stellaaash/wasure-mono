@@ -58,9 +58,9 @@ pub const Canvas = struct {
         std.debug.assert(y < self.height);
 
         const half_width: i32 = @intCast(self.width / 2);
-        const half_height: i32 = @intCast(self.width / 2);
+        const half_height: i32 = @intCast(self.height / 2);
         const converted_x: usize = @intCast(x + half_width);
-        const converted_y: usize = @intCast(half_height - 1 - y);
+        const converted_y: usize = @intCast(y + half_height);
 
         self.set(converted_x, converted_y, color);
     }

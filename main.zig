@@ -53,7 +53,7 @@ pub const world_up: Vec3 = .{ .x = 0.0, .y = 1.0, .z = 0.0 };
 /// The camera's position in the 3D world.
 pub const camera_position: Point3 = .{ .x = 0.0, .y = 0.0, .z = 0.0 };
 /// The vector the camera needs to look towards.
-pub const camera_rotation: Vec3 = .{
+pub const camera_direction: Vec3 = .{
     .x = 0,
     .y = 0,
     .z = 1,
@@ -65,12 +65,12 @@ pub const rotation_matrix: [3]Vec3 = init_camera();
 
 /// Initializes the rotation matrix according to the camera rotation on program start.
 fn init_camera() [3]Vec3 {
-    var matrix: [3]Vec3 = .{};
+    var matrix: [3]Vec3 = undefined;
 
     // Start with the Z axis, determined by the camera direction
-    matrix[2] = camera_rotation.normalize();
+    matrix[2] = camera_direction.normalize();
     // Then get the cross of Z with our Y reference, to get X
-    matrix[0] = matrix[2].cross(world_up).normalize();
+    matrix[0] = world_up.cross(matrix[2]).normalize();
     // Finally, get the actual up of the camera by crossing Z with our new X
     matrix[1] = matrix[0].cross(matrix[2]).normalize();
 
@@ -173,6 +173,10 @@ fn trace_ray(origin: Point3, direction: Vec3, start: f64, finish: f64, recursion
 }
 
 pub fn main() !void {
+    std.debug.print("[!] - {} {} {}\n", .{ rotation_matrix[0].x, rotation_matrix[1].x, rotation_matrix[2].x });
+    std.debug.print("[!] - {} {} {}\n", .{ rotation_matrix[0].y, rotation_matrix[1].y, rotation_matrix[2].y });
+    std.debug.print("[!] - {} {} {}\n", .{ rotation_matrix[0].z, rotation_matrix[1].z, rotation_matrix[2].z });
+
     var alloc: std.heap.GeneralPurposeAllocator(.{}) = .init;
     const gpa = alloc.allocator();
 
@@ -184,7 +188,7 @@ pub fn main() !void {
     while (y < canvas_height / 2) : (y += 1) {
         var x: i32 = -canvas_width / 2;
         while (x < canvas_width / 2) : (x += 1) {
-            const direction = canvas.to_viewport(x, y);
+            const direction = canvas.to_viewport(x, y).scale(rotation_matrix);
             const color = trace_ray(camera_position, direction, 1, std.math.inf(f32), recursion_limit);
 
             canvas.put_pixel(x, y, color);
